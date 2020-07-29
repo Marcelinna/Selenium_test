@@ -21,7 +21,7 @@ public class Tests {
         System.setProperty("webdriver.chrome.driver", "C:\\driver\\chromedriver.exe");
         driver = new ChromeDriver();
         //driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        WebDriverWait wait = new WebDriverWait(driver, 15);
+        wait = new WebDriverWait(driver, 15);
         driver.manage().window().maximize();
     }
     @Ignore
@@ -31,7 +31,7 @@ public class Tests {
         Assert.assertEquals(driver.getTitle(), "Modne buty damskie, męskie, dziecięce oraz torebki | eobuwie.pl");
     }
 
-
+    @Ignore
     @Test
     public void NegativeLoginTest() {
         driver.navigate().to("https://www.eobuwie.com.pl/customer/account/login/");
@@ -43,16 +43,20 @@ public class Tests {
         passwordInput.clear();
         passwordInput.sendKeys(userPassword);
         driver.findElement(By.cssSelector("[data-testid='login-submit-button']")).click();
-        //wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//li[@class='error-msg']//ul//li")));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[@class='error-msg']//ul//li")));
-        //wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[@class='error-msg']//ul//li")));
-        //try {
-        //   Thread.sleep(1000);
-       // } catch (InterruptedException e) {
-        //  e.printStackTrace();
-        //}
         Boolean loginErrorMessageisPresent = driver.findElement(By.xpath("//li[@class='error-msg']//ul//li")).isDisplayed();
         Assert.assertTrue(loginErrorMessageisPresent);
+    }
+
+    @Test
+    public void subPage(){
+        driver.navigate().to("https://www.eobuwie.com.pl");
+        driver.findElement(By.cssSelector("[data-testid='permission-popup-accept']")).click();
+        driver.findElement(By.xpath("//ul[@class='e-list e-mega-menu__list']/li[1]/a[contains(.,'Damskie')]")).click();
+        String checkUrl = "https://www.eobuwie.com.pl/damskie.html";
+        String URL = driver.getCurrentUrl();
+        Assert.assertEquals(URL, checkUrl );
+
 
     }
 
