@@ -26,7 +26,7 @@ public class Tests {
     }
     @Ignore
     @Test
-    public void HomePage() {
+    public void HomePageTest() {
         driver.navigate().to("https://www.eobuwie.com.pl");
         Assert.assertEquals(driver.getTitle(), "Modne buty damskie, męskie, dziecięce oraz torebki | eobuwie.pl");
     }
@@ -47,17 +47,28 @@ public class Tests {
         Boolean loginErrorMessageisPresent = driver.findElement(By.xpath("//li[@class='error-msg']//ul//li")).isDisplayed();
         Assert.assertTrue(loginErrorMessageisPresent);
     }
-
+    @Ignore
     @Test
-    public void subPage(){
+    public void subPageTest(){
         driver.navigate().to("https://www.eobuwie.com.pl");
         driver.findElement(By.cssSelector("[data-testid='permission-popup-accept']")).click();
         driver.findElement(By.xpath("//ul[@class='e-list e-mega-menu__list']/li[1]/a[contains(.,'Damskie')]")).click();
         String checkUrl = "https://www.eobuwie.com.pl/damskie.html";
         String URL = driver.getCurrentUrl();
         Assert.assertEquals(URL, checkUrl );
+    }
 
-
+    @Test
+    public void searchInputTest(){
+        driver.navigate().to("https://www.eobuwie.com.pl");
+        driver.findElement(By.cssSelector("[data-testid='permission-popup-accept']")).click();
+        WebElement SearchInput = driver.findElement(By.xpath("//div[@class='header-content__search-wrapper']//input[@name='q']"));
+        String searchWord = "klapki";
+        SearchInput.sendKeys(searchWord);
+        driver.findElement(By.xpath("//div[@class='header-content__search-wrapper']//button[@class='header-search__submit']")).click();
+        String URL = driver.getCurrentUrl();
+        System.out.print(URL);
+        Assert.assertTrue(URL.contains(searchWord));
     }
 
     @After
