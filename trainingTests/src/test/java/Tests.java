@@ -110,7 +110,7 @@ public class Tests {
         size.get(1).click();
         //get name of chosen product
         String productName = driver.findElement(By.cssSelector(".product-left__name-first")).getText();
-        // ad product to cart
+        // add product to cart
         driver.findElement(By.cssSelector("[data-testid='product-add-to-cart-button']")).click();
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("[data-testid='product-go-to-cart-link']")));
         // go to cart
@@ -121,7 +121,7 @@ public class Tests {
         System.out.println(productName + " " + productNameinCart);
         //check compatibility of product name added and in cart.
         Assert.assertEquals(productName, productNameinCart);
-        
+
     }
 
     @After
