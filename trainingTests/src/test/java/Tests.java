@@ -89,7 +89,7 @@ public class Tests {
         // check if currentUrl contains searched word
         Assert.assertTrue(URL.contains(searchWord));
     }
-
+    @Ignore
     @Test
     public void addProducttoCartTest() {
         driver.navigate().to("https://www.eobuwie.com.pl");
@@ -99,12 +99,12 @@ public class Tests {
         driver.findElement(By.xpath("//ul[@class='e-list e-mega-menu__list']/li[1]/a[contains(.,'Damskie')]")).click();
         wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".products-list .products-list__item")));
         // chose first element from displayed products
-        List<WebElement> Products = driver.findElements(By.cssSelector(".products-list .products-list__item"));
+        List<WebElement> products = driver.findElements(By.cssSelector(".products-list .products-list__item"));
         //System.out.print("Product count" + Products.size());
-        Products.get(0).click();
+        products.get(0).click();
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".dropdown .dropdown-toggle")));
         driver.findElement(By.cssSelector(".dropdown .dropdown-toggle")).click();
-        // chose first size from available
+        // chose size
         List<WebElement> size = driver.findElements(By.cssSelector(".dropdown-menu li"));
         //System.out.println("Size count" + size.size());
         size.get(1).click();
@@ -121,6 +121,31 @@ public class Tests {
         System.out.println(productName + " " + productNameinCart);
         //check compatibility of product name added and in cart.
         Assert.assertEquals(productName, productNameinCart);
+
+    }
+
+
+    @Test
+    public void addToFavoriteTest() throws InterruptedException {
+        driver.navigate().to("https://www.eobuwie.com.pl");
+        // close popup
+        driver.findElement(By.cssSelector("[data-testid='permission-popup-accept']")).click();
+        // chose type "Męskie"
+        driver.findElement(By.xpath("//ul[@class='e-list e-mega-menu__list']/li[2]/a[contains(.,'Męskie')]")).click();
+        // // chose element from displayed products
+        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".products-list .products-list__item")));
+        List<WebElement> products = driver.findElements(By.cssSelector(".products-list .products-list__item"));
+        products.get(2).click();
+        // add product to favorite
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("[data-testid='product-add-favourites-button']")));
+        driver.findElement(By.cssSelector("[data-testid='product-add-favourites-button']")).click();
+        //get number of favorite products
+        Thread.sleep(3000);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[data-testid='header-favourites-link']")));
+        String favoriteNumber = driver.findElement(By.cssSelector("[data-testid='header-favourites-link']")).getText();
+        System.out.print(favoriteNumber);
+        // check if number of favorite products is 1
+        Assert.assertEquals(favoriteNumber, "Ulubione (1)");
 
     }
 
